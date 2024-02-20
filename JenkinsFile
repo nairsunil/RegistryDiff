@@ -28,7 +28,7 @@ pipeline {
     }
     post{
         success{
-            echo "Latest commit message: \${GIT_COMMIT_MSG}"
+            echo "Latest commit message: ${GIT_COMMIT_MSG}"
         }
     }
 }
