@@ -3,6 +3,7 @@ pipeline {
     environment
     {
          GIT_PATH="D:\\LocalhostJenkins\\RegdiffProject"
+         WEB_HOOK_URL="https://netapp.webhook.office.com/webhookb2/7e94866e-a75e-4b54-80a8-283cf7185d05@4b0911a0-929b-4715-944b-c03745165b3a/IncomingWebhook/2463e9523ec545249ef724fca6d98bf2/6dbc83de-0058-4f4e-9f27-06a8961e1483"
     }
     stages {
         stage('build') {
@@ -20,17 +21,10 @@ pipeline {
                 }
             }
         }
-        stage('get_commit_msg') {
-            steps {
-                script {
-                    env.GIT_COMMIT_MSG = bat (script: 'git log -1', returnStdout: true).trim()
-                }
-            }
-        }
     }
     post{
         success{
-            echo "Latest commit message: ${GIT_COMMIT_MSG}"
+             bat("curl -v --location --request POST '$WEB_HOOK_URL' --header 'Content-Type: application/json' --data-raw '{\"@type\": \"MessageCard\",\"@context\": \"http://schema.org/extensions\",\"themeColor\": \"#00FF00\",\"summary\": \"Notification from GFC-Pipeline\",\"sections\": [{\"activityTitle\": \"Notification from ${JOB_NAME}\",\"activitySubtitle\": \"RLatest status of build #{BUILD_NUMBER}\",\"activityImage\": \"https://talonlicensing.blob.core.windows.net/gfcmabillingservice/paygo_netapp_teams_notify.png?sv=2021-04-10&st=2023-12-12T08%3A13%3A21Z&se=2023-12-13T08%3A13%3A21Z&sr=b&sp=r&sig=M%2B0GUZrChMdYcuR7%2Br3c%2FV0mXN41wANrlD7dQGrLLIc%3D\",\"facts\": [{\"name\": \"Status\",\"value\": \"Started\"}, {\"name\": \"Remarks\",\"value\": \"Started by user ${BUILD_USER}\"},{\"name\": \"Last Commit\",\"value\": \"${GIT_COMMIT_MESSAGE}\"}],\"markdown\": true}],\"potentialAction\": [{\"@type\": \"OpenUri\",\"name\": \"View Build\",\"targets\": [{ \"os\": \"default\", \"uri\": \"${BUILD_URL}\" }]}]}'")
         }
     }
 }
