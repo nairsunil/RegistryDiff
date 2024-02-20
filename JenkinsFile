@@ -16,22 +16,15 @@ pipeline {
                     submoduleCfg: [], 
                     userRemoteConfigs: [[credentialsId: 'PATForSunilRepo', url: 'https://github.com/nairsunil/RegistryDiff.git']]])
                 }
-                 script {
-                    env.GIT_COMMIT_MSG = bat (script: 'git log -1', returnStdout: true).trim()
-                }
             }
         }
     }
     post{
         success{
-            script{
-                BUILD_TRIGGER_BY = currentBuild.getBuildCauses()[0].shortDescription + " / " + currentBuild.getBuildCauses()[0].userId
-            }
-            office365ConnectorSend webhookUrl: 'https://netapp.webhook.office.com/webhookb2/7e94866e-a75e-4b54-80a8-283cf7185d05@4b0911a0-929b-4715-944b-c03745165b3a/IncomingWebhook/2463e9523ec545249ef724fca6d98bf2/6dbc83de-0058-4f4e-9f27-06a8961e1483', 
-factDefinitions: [[name: "Remarks", template: "Started by user ${BUILD_TRIGGER_BY}"], 
-[name: "Last Commit", template: "${GIT_COMMIT_MSG}"]],
-                color: "#FF0000",
-                status: "Success"
+            office365ConnectorSend message:"started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)",
+            webhookUrl: "$WEB_HOOK_URL",
+            color: "#00FF00",
+            status: "Success"
         }
     }
 }
