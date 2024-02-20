@@ -23,7 +23,7 @@ pipeline {
 
                 office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
                 webhookUrl: "$WEB_HOOK_URL",
-                factDefinitions: [[name: "Last Commit", template: ""]],
+                factDefinitions: [[name: "Last Commit", template: "${GIT_COMMIT_MSG }"]],
                 color: "#FFFF00",
                 status: "Build Started"
             }
