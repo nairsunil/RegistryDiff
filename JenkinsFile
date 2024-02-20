@@ -22,7 +22,7 @@ pipeline {
                 }
 
                 office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
-                webhookUrl: "${WEB_HOOK_URL}",
+                webhookUrl: "${env.WEB_HOOK_URL}",
                 factDefinitions: [[name: "Last Commit", template: "${GIT_COMMIT_MSG }"]],
                 color: "#FFFF00",
                 status: "Build Started"
@@ -32,13 +32,13 @@ pipeline {
     post{
         success{
             office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
-            webhookUrl: "${WEB_HOOK_URL}",
+            webhookUrl: "${env.WEB_HOOK_URL}",
             color: "#00FF00",
             status: "Success"
         }
         failure {
              office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
-            webhookUrl: "${WEB_HOOK_URL}",
+            webhookUrl: "${env.WEB_HOOK_URL}",
             color: "#FF0000",
             status: "Failed"
         }
