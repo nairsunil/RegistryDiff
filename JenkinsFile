@@ -1,11 +1,28 @@
 pipeline {
     agent any
+    environment
+    {
+         GIT_PATH="D:\\LocalhostJenkins\\RegdiffProject"
+    }
     stages {
         stage('build') {
             steps {
                 bat 'whoami'
-                office365ConnectorSend message: 'Hello', status: 'Failed', webhookUrl: 'https://netapp.webhook.office.com/webhookb2/7e94866e-a75e-4b54-80a8-283cf7185d05@4b0911a0-929b-4715-944b-c03745165b3a/IncomingWebhook/2463e9523ec545249ef724fca6d98bf2/6dbc83de-0058-4f4e-9f27-06a8961e1483'
+                 dir("${env.GIT_PATH}") {
+                    checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/master']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[credentialsId: 'PATForSunilRepo', url: 'https://github.com/nairsunil/RegistryDiff.git']]])
+                }
+                
             }
+        }
+    }
+    post{
+        success{
+            def commitMessage = bat(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+            echo "Latest commit message: \${commitMessage}"
         }
     }
 }
