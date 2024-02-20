@@ -27,7 +27,10 @@ pipeline {
             status: "Success"
         }
         failure {
-            
+             office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
+            webhookUrl: "$WEB_HOOK_URL",
+            color: "#00FF00",
+            status: "Failed"
         }
     }
 }
