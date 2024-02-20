@@ -21,7 +21,7 @@ pipeline {
     }
     post{
         success{
-            office365ConnectorSend message:"started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)",
+            office365ConnectorSend
             webhookUrl: "$WEB_HOOK_URL",
             color: "#00FF00",
             status: "Success"
