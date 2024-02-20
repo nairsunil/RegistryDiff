@@ -7,7 +7,9 @@ pipeline {
     }
     stages {
         stage('pre-req'){
-            echo "Check Pre-req"
+            steps{
+                echo "Check Pre-req"
+            }
         }
         stage('build') {
             steps {
