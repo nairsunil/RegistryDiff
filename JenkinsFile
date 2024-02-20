@@ -10,7 +10,7 @@ pipeline {
                 bat 'whoami'
                  dir("${env.GIT_PATH}") {
                     checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/master']], 
+                    branches: [[name: '*/main']], 
                     doGenerateSubmoduleConfigurations: false, 
                     submoduleCfg: [], 
                     userRemoteConfigs: [[credentialsId: 'PATForSunilRepo', url: 'https://github.com/nairsunil/RegistryDiff.git']]])
