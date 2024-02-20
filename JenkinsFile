@@ -14,9 +14,15 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false, 
                     submoduleCfg: [], 
                     userRemoteConfigs: [[credentialsId: 'PATForSunilRepo', url: 'https://github.com/nairsunil/RegistryDiff.git']]])
-                    env.GIT_COMMIT_MSG = bat(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
                 }
                 
+            }
+        }
+        stage('get_commit_msg') {
+            steps {
+                script {
+                    env.GIT_COMMIT_MSG = bat (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+                }
             }
         }
     }
