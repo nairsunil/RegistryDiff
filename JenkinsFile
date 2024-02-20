@@ -9,6 +9,7 @@ pipeline {
         stage('pre-req'){
             steps{
                 echo "Check Pre-req"
+                bat "test.bat one two"
             }
         }
         stage('build') {
