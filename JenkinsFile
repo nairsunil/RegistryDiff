@@ -16,6 +16,16 @@ pipeline {
                     submoduleCfg: [], 
                     userRemoteConfigs: [[credentialsId: 'PATForSunilRepo', url: 'https://github.com/nairsunil/RegistryDiff.git']]])
                 }
+
+                script {
+                    env.GIT_COMMIT_MSG = bat (script: 'git log -1', returnStdout: true).trim()
+                }
+
+                office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
+                webhookUrl: "$WEB_HOOK_URL",
+                factDefinitions: [[name: "Last Commit", template: ""]],
+                color: "#FFFF00",
+                status: "Build Started"
             }
         }
     }
@@ -29,7 +39,7 @@ pipeline {
         failure {
              office365ConnectorSend message: "Status of Build #${BUILD_NUMBER}",
             webhookUrl: "$WEB_HOOK_URL",
-            color: "#00FF00",
+            color: "#FF0000",
             status: "Failed"
         }
     }
