@@ -9,7 +9,8 @@ pipeline {
         stage('pre-req'){
             steps{
                 echo "Check Pre-req"
-                bat "test.bat one two"
+                echo ${GIT_COMMIT}
+                exho ${GIT_PREVIOUS_COMMIT}
             }
         }
         stage('build') {
