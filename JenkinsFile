@@ -9,8 +9,8 @@ pipeline {
         stage('pre-req'){
             steps{
                 echo "Check Pre-req"
-                echo "${GIT_COMMIT}"
-                exho "${GIT_PREVIOUS_COMMIT}"
+                echo "COMMIT: ${GIT_COMMIT}"
+                exho "PREV_COMMIT: ${GIT_PREVIOUS_COMMIT}"
             }
         }
         stage('build') {
